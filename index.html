@@ -103,16 +103,16 @@
 					</section>
 					<section>
 						<h3>Infrastructure As Code</h3>
-							<pre><code data-trim data-noescape>
-								resource "google_sql_database instance" "master" {
-								  name	           = "master-instance"
-								  database_version = "POSTGRES_11"
-								  region	   = "us-centra1"
+							<pre style="font-size: 70%;max-width: 110%"><code data-trim>
+resource "google_sql_database instance" "master" {
+  name	           = "master-instance"
+  database_version = "POSTGRES_11"
+  region	   = "us-centra1"
 								
-								  settings {
-								    tier = "db-f1-micro"
-								  }
-                                                                }
+  settings {
+    tier = "db-f1-micro"
+  }
+}
 							</code></pre>
 							<p class="fragment fade-up">But can we do better?</p>
 					</section>
@@ -130,22 +130,22 @@
 					</section>
 					<section>
 						<h3>Infrastructure As Data</h3>
-							<pre><code data-trim code-noescape>
-								apiVersion: sql.cnrm.cloud.google.com/v1beta1
-  								kind: SQLInstance
-  								metadata:
-  								  name: sqlinstance-sample-mysql
-  								spec:
-								  databaseVersion: MYSQL_5_7
-								  region: us-central1
-								settings:
-								  tier: db-g1-small
-								  diskSize: 25
-								  diskType: PD_SSD
-								  availabilityType: REGIONAL
-								  backupConfiguration:
-								  binaryLogEnabled: true
-								  enabled: true
+							<pre style="font-size:70%;max-width: 110%"><code data-trim code-noescape>
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+  kind: SQLInstance
+  metadata:
+    name: sqlinstance-sample-mysql
+  spec:
+    databaseVersion: MYSQL_5_7
+    region: us-central1
+  settings:
+    tier: db-g1-small
+    diskSize: 25
+    diskType: PD_SSD
+    availabilityType: REGIONAL
+    backupConfiguration:
+    binaryLogEnabled: true
+    enabled: true
 							</code></pre>
 					</section>
 				<section>		
