@@ -85,7 +85,41 @@
 						<img src="/images/tracker2.0-index.png" width="600" height="600">
 					</section>
 				</section>
-			</div>
+	<!-- Security Automation -->
+				<section>
+					<h3>The Path To Security Automation Enlightenment</h3>
+				</section>
+				
+				<section>
+				
+					<section>
+						<h3>Infrastructure As Code</h3>
+							<p><ul>
+								<li>Manage infrastucture using a descriptive model</li>
+								<li>Generates same environment every time it is applied</li>
+								<li>Created to solve "environmental drift" in release pipelines</li>
+								<li>Idempotence a key feature</li>
+							</ul></p>
+					</section>
+					<section>
+						<h3>Infrastructure As Code</h3>
+							<pre><code data-trim data-noescape>
+								resource "google_sql_database instance" "master" {
+								  name	           = "master-instance"
+								  database_version = "POSTGRES_11"
+								  region	   = "us-centra1"
+								
+								  settings {
+                        					    # Second-generation instance tiers are based on the machine					
+								    tier = "db-f1-micro"
+								  }
+                                                                }
+							</code></pre>
+							<p class="fragment fade-up">But can we do better?</p>
+					</section>
+				</section>
+
+			</div>   
 		</div>
 
 		<script src="dist/reveal.js"></script>
