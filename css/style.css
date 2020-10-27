@@ -4,6 +4,10 @@
   text-shadow: 0 0 20px #333;
 }
 
+.smaller-text .remark-code {
+  font-size: 0.5em;
+}
+
 .column:first-of-type {
   float:left;
 }
@@ -142,19 +146,16 @@ blockquote p em {
   color: red;
 }
 
-/* 背景图片拉伸平铺 */
 .remark-slide-content {
   background-size: 100% 100%;
 }
 
-/* 代码字体 */
 .remark-code,
 .remark-inline-code {
   font-weight: normal;
   font-family: "Cascadia Code", Consolas, "Courier New", monospace;
 }
 
-/* 行内 <code> 底色等样式 */
 .remark-inline-code {
   background-color: var(--nord6);
   padding: 0.2em 0.4em;
@@ -175,7 +176,6 @@ blockquote p em {
   align-items: center;
 }
 
-/* 针对 typo.css 做一些修正 */
 a.github-fork-ribbon {
   border-bottom-color: transparent;
 }
