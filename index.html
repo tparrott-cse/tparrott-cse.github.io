@@ -1,71 +1,1096 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <head>
+    <title>Building for automation</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="user-scalable=no,initial-scale=1,maximum-scale=1,minimum-scale=1,width=device-width"
+    />
+    <link rel="stylesheet" type="text/css" href="./css/typo.css" />
+    <link rel="stylesheet" type="text/css" href="./css/nord-dark.css" />
+    <link rel="stylesheet" type="text/css" href="./css/font-nord.css" />
+    <link rel="stylesheet" type="text/css" href="./css/bg-nord.css" />
+    <link rel="stylesheet" type="text/css" href="./css/style.css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: nord-dark, center, middle, title
 
-		<title>Tracker 2.0 Roadmap</title>
-		<meta name="author" content="Tyler Parrott">
+# SUPER HAPPY FUNTIME PRESENTATION THAT SOLVES SECURITY FOREVER
 
-		<link rel="stylesheet" href="dist/reset.css">
-		<link rel="stylesheet" href="dist/reveal.css">
-		<link rel="stylesheet" href="dist/theme/black.css" id="theme">
+---
 
-		<!-- Theme used for syntax highlighted code -->
-		<link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme">
-	</head>
-	<body>
-		<div class="reveal">
-			<div class="slides">
-	<!-- Title Slide -->
-				<section>
-					<h3> Tracker 2.0 Roadmap</h3>
-					<img src="/images/tracker_v-03.png" height="425" width="550">
-				</section>
+class: nord-dark, left, middle
+
+## Mike Williamson
+
+* HC ITsec > startups > CDS > TBSCyber
+
+---
+
+class: nord-dark, left, middle
+
+## Tyler Parrott
+
+* Senior IT Security Analyst @CCCS
+* Part of team that open sourced Assemblyline
+* Team Lead for CCCS Tracker collaboration
+
+---
+
+class: nord-dark, left, middle
+
+## TBS 🤝 CCCS
+
+---
+class: nord-dark, left, middle
+
+## Tracker 1.0
+
+* HTTPS/SSL metrics only
+* cumbersome domain management (.csv!)
+* poor performance/scaling
+* difficult to iterate upon
+
+.sync.eighty[![https-everywhere](images/https-everywhere.png)]
+
+---
+
+class: nord-dark, left, middle
+
+## Tracker 2.0
+
+* Developed following	Directive on Service and Digital
+* User based domain management
+* Orchestrated scanning for efficient resource usage/scaling
+* DMARC/SPF/DKIM added, easy to extend
+* DMARC Aggregate report dashboard
+* Tailored guidance based on scan results
+* Continuous monitoring to enable strong posture
+* Powerful tool for deployment pipeline
+
+.sync.eighty[![tracker](images/tracker-demo.gif)]
+
+---
+
+class: nord-dark, middle, left
+
+### The path to security automation enlightenment
+
+---
+
+class: nord-dark, middle, left, vsplit
+
+## Infrastructure as Code
+
+.column[
+* The good parts: it's code!
+* The bad parts: it's code!
+]
+
+.column[
+
+```
+resource "google_sql_database instance" "master" {
+name = "master-instance"
+database_version = "POSTGRES_11"
+region = "us-centra1"
+settings {
+    tier = "db-f1-micro"
+  }
+}
+```
+
+]
+
+---
 
 
-				<section>
-					<h3>Tracker 1.0</h3>
-					<img src="/images/https-everywhere.png" width="400" height="300">
-					<p><ul>
-						<li>Inefficient scanning</li>
-						<li>No domain management</li>
-						<li>Lacks DMARC/does not scale</li>
-					</ul></p>
-				</section>
+class: nord-dark, middle, left, vsplit
 
-				<section>
-					<h3>Tracker 2.0</h3>
-					<p><ul>
-						<li>Rebuilt from the ground up using cloud adoption strategy</li>
-						<li>Domain management</li>
-						<li>Tailored guidance based on scan results</li>
-						<li>Fully orchestrated for efficient resource usage</li>
-						<li>New scans are easy to incorporate</li>
-					</ul></p>
-				</section>
+## Infrastructure as Data
 
-				<section>
-					<h3>Tracker 2.0 Landing Page</h3>
-					<img src="/images/tracker2.0-index.png" width="600" height="600">
-				</section>
-			</div>
-		</div>
+.column[
+* Manage infrastructure using a declarative model
+* Treats infrastructure as data, more portable than code
+* Data can be imported/modified by other tools
+* Language agnostic, version controlled
+]
 
-		<script src="dist/reveal.js"></script>
-		<script src="plugin/notes/notes.js"></script>
-		<script src="plugin/markdown/markdown.js"></script>
-		<script src="plugin/highlight/highlight.js"></script>
-		<script>
-			// More info about initialization & config:
-			// - https://revealjs.com/initialization/
-			// - https://revealjs.com/config/
-			Reveal.initialize({
-				hash: true,
+.column[
+```
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+  kind: SQLInstance
+  metadata:
+    name: sqlinstance-sample-mysql
+  spec:
+    databaseVersion: MYSQL_5_7
+    region: us-central1
+  settings:
+    tier: db-g1-small
+    diskSize: 25
+    diskType: PD_SSD
+    availabilityType: REGIONAL
+    backupConfiguration:
+    binaryLogEnabled: true
+    enabled: true
+```
+]
 
-				// Learn about plugins: https://revealjs.com/plugins/
-				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
-			});
-		</script>
-	</body>
+---
+
+class: nord-dark, middle, left
+
+### The goal: Make security visible
+
+---
+
+class: nord-dark, middle, left
+
+### What we can make visible
+
+* Difference between domains TLS/DMARC settings and "good"?
+* Totals within/differences between groups of domains
+* Trends for domains/groups towards "good"
+* Where things stand now
+
+---
+
+class: nord-dark, middle, left
+
+### But there is so much more we want to make visible...
+
+---
+
+class: nord-dark, middle, left
+
+### Important security information exists at every layer
+
+* Platform
+* Infrastructure
+* Languages
+* Dependencies
+* Workflow (who, and how)
+* Application code
+* Inputs & validation
+
+---
+
+class: nord-dark, middle, left
+
+### Very little of this is visible from the outside
+
+* Platform
+* Infrastructure
+* Languages
+* Dependencies
+* Workflow (who, and how)
+* Application code
+* Inputs & validation
+
+---
+
+class: nord-dark, left, middle
+
+### Analyzing any of this requires data
+
+* Platform: *data*
+* Infrastructure: *data*
+* Languages: *data*
+* Dependencies: *data*
+* Workflow (who, and how): *data*
+* Application code: *data*
+* Inputs & validation: *data*
+
+---
+
+class: nord-dark, left, middle
+
+### Can we build Tracker so that it can been analyzed?
+
+* Make the "behind the scenes" stuff visible?
+* Make it easy to answer "are we vulnerable"?
+
+---
+
+class: nord-dark, left, middle
+
+### Tracker as a testbed: * as data
+
+* Platform: *Kubernetes*
+* Infrastructure: *Config Connector*
+* Languages: *GitHub API*
+* Dependencies: *GitHub API*
+* Workflow (who, and how): *GitHub API*
+* Application code: ? (CodeQL?)
+* Inputs & validation: *GraphQL*
+
+---
+
+class: nord-dark, center, middle
+
+## Platform as data: Kubernetes
+
+---
+
+class: nord-dark, middle, left
+
+### Kubernetes
+* describe your system with data
+* executes that description
+* *ensures system never deviates from the description*
+
+.sync.sixty[![](images/kubernetes-sync.svg)]
+
+---
+
+class: nord-dark, middle, left
+
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tracker-frontend
+  namespace: frontend
+spec:
+*  replicas: 2
+  selector:
+    matchLabels:
+      app: tracker-frontend
+  template:
+    metadata:
+      labels:
+        app: tracker-frontend
+    spec:
+      containers:
+*      - image: gcr.io/track-compliance/frontend:master-320b5fd
+        name: frontend
+        ports:
+        - containerPort: 3000
+```
+
+---
+
+
+class: nord-dark, left, middle
+
+### When system descriptions are YAML
+* Data for analysis
+* Simplified operations
+
+---
+
+class: nord-dark, left, middle
+
+### Operations
+
+#### Deployment
+
+```yaml
+  -     - image: gcr.io/track-compliance/frontend:master-320b5fd
+* +     - image: gcr.io/track-compliance/frontend:master-d07b6e0
+```
+
+#### Rollback
+
+```yaml
+* +     - image: gcr.io/track-compliance/frontend:master-320b5fd
+  -     - image: gcr.io/track-compliance/frontend:master-d07b6e0
+```
+
+---
+
+class: nord-dark, left, middle
+
+### Analysis: Config on GitHub says...
+
+```bash
+$ git clone --depth 1 git@github.com:canada-ca/tracker.git && cd tracker
+$ kustomize build platform/overlays/gke | \
+>   yq 'select(.kind == "Service" and .spec.type == "LoadBalancer").spec.ports[].port'
+80
+443
+```
+
+---
+
+class: nord-dark, left, middle
+
+### Analysis: System on Google Cloud shows
+
+```bash
+$ sudo nmap -p- --reason pulse.alpha.canada.ca
+[sudo] password for mike:
+Starting Nmap 7.80 ( https://nmap.org ) at 2020-09-05 13:52 EDT
+Nmap scan report for pulse.alpha.canada.ca (34.95.5.243)
+Host is up, received syn-ack ttl 56 (0.046s latency).
+rDNS record for 34.95.5.243: 243.5.95.34.bc.googleusercontent.com
+Not shown: 65533 filtered ports
+Reason: 65533 no-responses
+PORT    STATE SERVICE REASON
+* 80/tcp  open  http    syn-ack ttl 56 👀
+* 443/tcp open  https   syn-ack ttl 56
+
+Nmap done: 1 IP address (1 host up) scanned in 191.39 seconds
+```
+
+---
+
+class: nord-dark, middle, left
+
+### Why this works
+* Data is on GitHub
+* Changes flow through
+
+.gitops.sixty[![gitops](images/gitops2.svg)]
+
+---
+
+class: nord-dark, middle, left
+
+### Bringing these ideas to the infrastructure layer...
+
+---
+
+class: nord-dark, middle, left
+
+## Infrastructure as data: Config Connector
+
+---
+
+class: nord-dark, middle, left
+
+### Config Connector
+
+* Describe GCP infra/services in Kubernetes data format
+* Extends Kubernetes to act on these new types
+
+.sync.sixty[![](images/config-connector-sync.svg)]
+
+---
+
+class: nord-dark, middle, left
+
+### Hosted SQL database "as data"
+
+```yaml
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+* kind: SQLInstance
+metadata:
+  name: sqluser-dep
+spec:
+  region: northamerica-northeast1
+  databaseVersion: MYSQL_5_7
+  settings:
+    backupConfiguration:
+        enabled: true
+        binaryLogEnabled: true
+        startTime: "18:00"
+    ipConfiguration:
+      requireSsl: true
+    tier: db-n1-standard-1
+```
+
+---
+
+class: nord-dark, middle, left
+
+
+### When our description is YAML...
+
+---
+
+class: nord-dark, middle, left
+
+### Business Continuity: How long to rebuild from scratch?
+
+```yaml
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+ kind: SQLInstance
+metadata:
+  name: sqluser-dep
+spec:
+  region: northamerica-northeast1
+  databaseVersion: MYSQL_5_7
+  settings:
+    backupConfiguration:
+        enabled: true
+        binaryLogEnabled: true
+        startTime: "18:00"
+    ipConfiguration:
+      requireSsl: true
+    tier: db-n1-standard-1
+```
+
+---
+
+class: nord-dark, middle, left
+
+### Policy: Meets data residency requirements?
+
+```yaml
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLInstance
+metadata:
+  name: sqluser-dep
+spec:
+*  region: northamerica-northeast1
+  databaseVersion: MYSQL_5_7
+  settings:
+    backupConfiguration:
+        enabled: true
+        binaryLogEnabled: true
+        startTime: "18:00"
+    ipConfiguration:
+      requireSsl: true
+    tier: db-n1-standard-1
+```
+
+---
+
+class: nord-dark, middle, left
+
+### Operations: Are backups getting done?
+
+```yaml
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLInstance
+metadata:
+  name: sqluser-dep
+spec:
+  region: northamerica-northeast1
+  databaseVersion: MYSQL_5_7
+  settings:
+*    backupConfiguration:
+*        enabled: true
+        binaryLogEnabled: true
+        startTime: "18:00"
+    ipConfiguration:
+      requireSsl: true
+    tier: db-n1-standard-1
+```
+
+---
+
+class: nord-dark, middle, left
+
+### Security: Encryption in transit?
+
+```yaml
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLInstance
+metadata:
+  name: sqluser-dep
+spec:
+  region: northamerica-northeast1
+  databaseVersion: MYSQL_5_7
+  settings:
+    backupConfiguration:
+        enabled: true
+        binaryLogEnabled: true
+        startTime: "18:00"
+    ipConfiguration:
+*      requireSsl: true
+    tier: db-n1-standard-1
+```
+
+---
+
+class: nord-dark, middle, left
+
+### Unlike Word Docs, data is dual use
+* Always up to date because it's needed for operations
+* YAML is human readable, supporting manual analysis
+* YAML is machine readable supporting automated analysis
+
+---
+
+class: nord-dark, middle, left
+
+### Data as documentation
+* We can ensure this documentation reflects reality
+
+.gitopscc.eighty[![gitops](images/gitops.svg)]
+
+---
+
+class: nord-dark, middle, left
+
+## * as data: A tour
+
+* ~~Platform: *Kubernetes*~~
+* ~~Infrastructure: *Config Connector*~~
+* Languages
+* Dependencies
+* Workflow (who, and how)
+* Application code
+* Inputs & validation
+
+---
+
+class: nord-dark, middle, left
+
+### Choosing technologies that fit the "* as data" model
+* Enabled automated analysis
+* Brought operational benefits
+* Eliminated configuration drift
+
+---
+
+class: nord-dark, middle, left
+
+### Where we do the work can give us more data
+* Languages
+* Dependencies
+* Workflow (who, and how)
+
+---
+
+class: nord-dark, middle, left
+
+## GitHub the code hosting service
+* All our "* as data" can be hosted there
+* Public data means analysis without special access
+
+---
+
+class: nord-dark, middle, left
+
+## GitHub ~~the code hosting service~~
+
+---
+
+class: nord-dark, middle, left
+
+### GitHub the platform
+
+* Understands the code it's hosting
+* Records actions taken (opening/closing issues/PRs)
+* *Represents everything on GitHub as data* via it's API
+
+---
+
+class: nord-dark, middle, left
+
+### Languages as data: GitHub API
+
+---
+
+class: nord-dark, middle, left
+
+### Languages matter for security
+* "Microsoft has deemed C++ no longer acceptable for writing mission-critical software."[1]
+* JavaScript: language level SQL injection prevention
+* Golang: Minimalist deployments, tiny attack surface
+* Rust: Amazon's choice for security sensitive projects: FireCracker VM & BottleRocket OS
+
+<cite>[1] https://thenewstack.io/microsoft-rust-is-the-industrys-best-chance-at-safe-systems-programming/</cite>
+
+---
+
+class: nord-dark, middle, left
+
+### What programming languages are used?
+
+```graphql
+{
+  repository(owner: "canada-ca" name: "tracker") {
+    nameWithOwner
+    languages(first: 3) {
+      edges {
+        node {
+          name
+        }
+      }
+    }
+  }
+}
+
+```
+---
+
+class: nord-dark, middle, left
+
+```json
+{
+  "data": {
+    "repository": {
+      "nameWithOwner": "canada-ca/tracker",
+      "languages": {
+        "edges": [
+          {
+            "node": {
+              "name": "Dockerfile"
+            }
+          },
+          {
+            "node": {
+              "name": "Python"
+            }
+          },
+          {
+            "node": {
+              "name": "JavaScript"
+            }
+          }
+        ]
+      }
+    }
+  }
+}
+```
+---
+
+class: nord-dark, middle, left
+
+### Dependencies as data: GitHub API
+
+---
+
+class: nord-dark, middle, left
+
+### Dependencies matter for security
+
+> OSS Components Make Up 90% of a Modern Application
+
+
+<cite>[1] Sonatype's 2020 State of Software Supply Chain.</cite>
+
+---
+
+class: nord-dark, middle, left
+
+### What dependencies does this project have?
+
+```graphql
+{
+  repository(owner: "canada-ca", name: "tracker") {
+    dependencyGraphManifests(first: 1) {
+      edges {
+        node {
+          filename
+          dependenciesCount
+          dependencies(first: 5) {
+            nodes {
+              packageName
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+```
+---
+
+class: nord-dark, middle, left
+
+```json
+{
+  "data": {
+    "repository": {
+      "dependencyGraphManifests": {
+        "edges": [
+          {
+            "node": {
+              "filename": "api/Pipfile",
+              "dependenciesCount": 23,
+              "dependencies": {
+                "nodes": [
+                  {
+                    "packageName": "bcrypt"
+                  },
+                  {
+                    "packageName": "flask"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}
+```
+
+---
+class: nord-dark, middle, left
+
+### Bonus: Vulnerabilities as data!
+(PHP, Java, .NET, Python, Ruby, JavaScript)
+
+```graphql
+{
+  repository(owner: "canada-ca" name: "tracker") {
+    vulnerabilityAlerts(first: 5)  {
+      edges {
+        node {
+          securityVulnerability {
+            severity
+            advisory {
+              description
+            }
+          }
+        }
+      }
+    }
+  }
+}
+```
+---
+
+class: nord-dark, middle, left
+
+```json
+{
+  "data": {
+    "repository": {
+      "vulnerabilityAlerts": {
+        "edges": []
+      }
+    }
+  }
+}
+```
+
+---
+
+class: nord-dark, middle, left
+
+## Workflow as data
+
+---
+
+class: nord-dark, middle, left
+
+### Peer review
+
+```graphql
+{
+  repository(owner: "canada-ca", name: "tracker") {
+    nameWithOwner
+    pullRequests(last: 5 states: MERGED) {
+      nodes {
+        author {
+          login
+        }
+        reviews(last: 1) {
+          edges {
+            node {
+              author {
+                login
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+```
+---
+
+class: nord-dark, middle, left
+
+```json
+{
+  "data": {
+    "repository": {
+      "nameWithOwner": "canada-ca/tracker",
+      "pullRequests": {
+        "nodes": [
+          {
+            "author": {
+              "login": "FestiveKyle"
+            },
+            "reviews": {
+              "edges": [
+                {
+                  "node": {
+                    "author": {
+                      "login": "sleepycat"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "author": {
+              "login": "sleepycat"
+            },
+            "reviews": {
+              "edges": []
+            }
+          },
+        ]
+      }
+    }
+  }
+}
+```
+---
+
+class: nord-dark, middle, left
+
+### Finding unmaintained code with the data from the last commit
+
+```graphql
+{
+  organization(login: "canada-ca") {
+    repositories(first: 3) {
+      nodes {
+        nameWithOwner
+        ref(qualifiedName: "master") {
+          target {
+            ... on Commit {
+              pushedDate
+            }
+          }
+        }
+      }
+    }
+  }
+}
+```
+---
+
+class: nord-dark, middle, left
+
+### Application code as data: CodeQL
+
+---
+
+class: nord-dark, middle, left
+
+### CodeQL: SQL for querying code
+
+```sql
+import javascript
+
+from Function f
+where f.getNumParameter() > 5
+select f
+```
+
+---
+
+class: nord-dark, middle, left
+
+### GitHub
+
+* API transforms everything on GitHub into data!
+* Valuable data on what's out there and where to focus (depending on usage)
+
+---
+
+class: nord-dark, middle, left
+
+## Validation as data: GraphQL
+
+???
+Security has been telling devs to validate their inputs for decades now, but if doing so were as simple as it sounds security would largely be solved already.
+Released in 2015, a technology for to building APIs offered some new options for addressing this impasse. That technology is GraphQL.
+---
+
+class: nord-dark, middle, left
+
+### GraphQL: A language for your API
+
+.eighty[![graphql](images/graphql.svg)]
+
+---
+
+class: nord-dark, middle, left
+
+### GraphQL types: Be specific about what you accept
+
+* String > Postal Code
+* String > ISBN
+* String > Social Insurance Number
+
+---
+
+class: nord-dark, middle, left
+
+### Being specific keeps invalid/malicious inputs out
+
+.eighty[![https-everywhere](images/graphql-sin.png)]
+
+---
+
+class: nord-dark, middle, left
+
+### We don't know how most of our system will react to invalid inputs
+
+> OSS Components Make Up 90% of a Modern Application
+
+<cite>Sonatype's 2020 State of Software Supply Chain.</cite>
+
+---
+
+class: nord-dark, middle, left
+
+### You can ask GraphQL about what types are defined
+
+.eighty[![https-everywhere](images/schema-as-data.png)]
+
+---
+
+class: nord-dark, middle, left
+
+### GraphQL APIs make input handling auditable from the outside
+
+```bash
+$ npx graphql-attack-surface https://pulse.alpha.canada.ca/graphql
+
+
+findDomainsByOrg accepts the following string inputs:
+  before accepts a value of String
+  after accepts a value of String
+
+...
+
+authenticateTwoFactor accepts the following string inputs:
+  otpCode accepts a value of String!
+```
+
+---
+class: nord-dark, center, middle, title
+
+.logo[🤖]
+
+# Building for automation
+
+---
+
+class: nord-dark, left, middle
+
+### Data enabled automation
+
+* Reproducability: ~10 minute rebuild
+* Auditability: Git as governance
+* Security: Fewer credentials in fewer places, No config drift
+* Operations: better, safer, faster
+
+---
+
+class: nord-dark, middle, left
+
+### Can we build Tracker so that it can been analyzed?
+
+* More than we thought!
+* Everything from service accounts to input validation is visible from the outside
+
+---
+
+class: nord-dark, left, middle
+
+### Tracker is now data that can be input to some other process
+
+---
+
+class: nord-dark, left, middle
+
+### The ingredients for an automated ATO?
+
+* Kubernetes: 56 data types
+* Config Connector: 91 data types
+* 147 Lego blocks, that can build any system (we use ~35)
+* Each has ~2-10 properties relevant to answering our questions:
+  * Does it meet policy requirements?
+  * Is it configured securely?
+  * Does it follow best practice?
+
+---
+
+class: nord-dark, left, middle
+
+### One Weird Trick! GitHub
+
+* Biggest bang for the buck
+* Great for devs:
+  * productivity
+  * collaboration
+* Great for security:
+  * Unlocks a tonne of data
+  * Vulnerability scanning by default!
+
+---
+
+class: nord-dark, left, middle
+
+### We (GoC) need experiments like this
+
+* We need a lot of new services
+* Shipping shouldn't require accepting a tonne of risk
+
+---
+
+class: nord-dark, left, middle
+
+### We (Security) need experiments like this
+
+* Dev: 🐩🐩🐩🐩🐩🐩🐩🐩🐩🐩<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;🐩🐩🐩🐩🐩🐩🐩🐩🐩🐩<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;🐩🐩🐩🐩🐩🐩🐩🐩🐩🐩<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;🐩🐩🐩🐩🐩🐩🐩🐩🐩🐩<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;🐩🐩🐩🐩🐩🐩🐩🐩🐩🐩<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;🐩🐩🐩🐩🐩🐩🐩🐩🐩🐩<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;🐩🐩🐩🐩🐩🐩🐩🐩🐩🐩<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;🐩🐩🐩🐩🐩🐩🐩🐩🐩🐩<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;🐩🐩🐩🐩🐩🐩🐩🐩🐩🐩<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;🐩🐩🐩🐩🐩🐩🐩🐩🐩🐩<br/>
+* Ops: 🦆🦆🦆🦆🦆🦆🦆🦆🦆🦆
+* Sec: 🐈
+
+---
+
+class: nord-dark, left, middle
+
+### Making security visible empowers everyone to work on this problem
+
+* Dev: 🐈🐈🐈🐈🐈🐈🐈🐈🐈🐈<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;🐈🐈🐈🐈🐈🐈🐈🐈🐈🐈<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;🐈🐈🐈🐈🐈🐈🐈🐈🐈🐈<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;🐈🐈🐈🐈🐈🐈🐈🐈🐈🐈<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;🐈🐈🐈🐈🐈🐈🐈🐈🐈🐈<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;🐈🐈🐈🐈🐈🐈🐈🐈🐈🐈<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;🐈🐈🐈🐈🐈🐈🐈🐈🐈🐈<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;🐈🐈🐈🐈🐈🐈🐈🐈🐈🐈<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;🐈🐈🐈🐈🐈🐈🐈🐈🐈🐈<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;🐈🐈🐈🐈🐈🐈🐈🐈🐈🐈<br/>
+* Ops: 🐈🐈🐈🐈🐈🐈🐈🐈🐈🐈
+* Sec: 🐈
+
+---
+
+class: nord-dark, middle, center
+
+## Fin
+
+
+
+    </textarea>
+
+    <script src="js/remark.min.js"></script>
+    <script>
+      var slideshow = remark.create({
+        ratio: "16:9",
+        highlightStyle: "dark",
+        highlightLines: true,
+        countIncrementalSlides: false,
+        navigation: {
+          scroll: false,
+          touch: true,
+          click: false
+        }
+      });
+
+    </script>
+  </body>
 </html>

@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   id="svg4196"
+   version="1.1"
+   viewBox="0 0 215.5506 96.296707"
+   height="96.296707mm"
+   width="215.5506mm">
+  <defs
+     id="defs4190" />
+  <metadata
+     id="metadata4193">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     transform="translate(-19.91881,-58.58963)"
+     id="layer1">
+    <text
+       id="text4212"
+       y="76.354759"
+       x="19.91881"
+       style="font-size:5.64444px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;stroke-width:0.264583"
+       xml:space="preserve"><tspan
+         id="tspan4231"
+         style="fill:#ffffff;stroke-width:0.264583"
+         y="76.354759"
+         x="19.91881">type Email {</tspan><tspan
+         id="tspan4547"
+         style="fill:#ffffff;stroke-width:0.264583"
+         y="83.410309"
+         x="19.91881">  subject: String</tspan><tspan
+         id="tspan4549"
+         style="fill:#ffffff;stroke-width:0.264583"
+         y="90.465858"
+         x="19.91881">  body: String</tspan><tspan
+         id="tspan4551"
+         style="fill:#ffffff;stroke-width:0.264583"
+         y="97.521408"
+         x="19.91881">}</tspan><tspan
+         id="tspan4555"
+         style="fill:#ffffff;stroke-width:0.264583"
+         y="104.57696"
+         x="19.91881"></tspan><tspan
+         id="tspan4563"
+         style="fill:#ffffff;stroke-width:0.264583"
+         y="111.63251"
+         x="19.91881">type Query {</tspan><tspan
+         id="tspan4557"
+         style="fill:#ffffff;stroke-width:0.264583"
+         y="118.68806"
+         x="19.91881">  myEmails: [Email]</tspan><tspan
+         id="tspan4559"
+         style="fill:#ffffff;stroke-width:0.264583"
+         y="125.74361"
+         x="19.91881">}</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:5.64444px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;stroke-width:0.264583"
+       x="96.05172"
+       y="76.354759"
+       id="text4255"><tspan
+         id="tspan4486"
+         x="96.05172"
+         y="76.354759"
+         style="fill:#ffffff;stroke-width:0.264583">{</tspan><tspan
+         id="tspan4502"
+         x="96.05172"
+         y="83.410309"
+         style="fill:#ffffff;stroke-width:0.264583">  myEmails {</tspan><tspan
+         id="tspan4504"
+         x="96.05172"
+         y="90.465858"
+         style="fill:#ffffff;stroke-width:0.264583">    subject</tspan><tspan
+         id="tspan4506"
+         x="96.05172"
+         y="97.521408"
+         style="fill:#ffffff;stroke-width:0.264583">  }</tspan><tspan
+         id="tspan4508"
+         x="96.05172"
+         y="104.57696"
+         style="fill:#ffffff;stroke-width:0.264583">}</tspan><tspan
+         id="tspan4510"
+         x="96.05172"
+         y="111.63251"
+         style="fill:#ffffff;stroke-width:0.264583" /></text>
+    <text
+       id="text4273"
+       y="76.354759"
+       x="159.72147"
+       style="font-size:5.64444px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;stroke-width:0.264583"
+       xml:space="preserve"><tspan
+         id="tspan4375"
+         style="fill:#ffffff;stroke-width:0.264583"
+         y="76.354759"
+         x="159.72147">{</tspan><tspan
+         id="tspan4444"
+         style="fill:#ffffff;stroke-width:0.264583"
+         y="83.410309"
+         x="159.72147">  &quot;data&quot;: {</tspan><tspan
+         id="tspan4446"
+         style="fill:#ffffff;stroke-width:0.264583"
+         y="90.465858"
+         x="159.72147">    &quot;myEmails&quot;: [</tspan><tspan
+         id="tspan4448"
+         style="fill:#ffffff;stroke-width:0.264583"
+         y="97.521408"
+         x="159.72147">      {</tspan><tspan
+         id="tspan4450"
+         style="fill:#ffffff;stroke-width:0.264583"
+         y="104.57696"
+         x="159.72147">        &quot;subject&quot;: &quot;Hello!&quot;</tspan><tspan
+         id="tspan4452"
+         style="fill:#ffffff;stroke-width:0.264583"
+         y="111.63251"
+         x="159.72147">      },</tspan><tspan
+         id="tspan4454"
+         style="fill:#ffffff;stroke-width:0.264583"
+         y="118.68806"
+         x="159.72147">      {</tspan><tspan
+         id="tspan4456"
+         style="fill:#ffffff;stroke-width:0.264583"
+         y="125.74361"
+         x="159.72147">        &quot;subject&quot;: &quot;Greetings&quot;</tspan><tspan
+         id="tspan4458"
+         style="fill:#ffffff;stroke-width:0.264583"
+         y="132.79916"
+         x="159.72147">      }</tspan><tspan
+         id="tspan4460"
+         style="fill:#ffffff;stroke-width:0.264583"
+         y="139.85471"
+         x="159.72147">    ]</tspan><tspan
+         id="tspan4462"
+         style="fill:#ffffff;stroke-width:0.264583"
+         y="146.91026"
+         x="159.72147">  }</tspan><tspan
+         id="tspan4464"
+         style="fill:#ffffff;stroke-width:0.264583"
+         y="153.96581"
+         x="159.72147">}</tspan></text>
+    <text
+       id="text4387"
+       y="62.878082"
+       x="21.514072"
+       style="font-size:5.64444px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;stroke-width:0.264583"
+       xml:space="preserve"><tspan
+         style="fill:#ffffff;stroke-width:0.264583"
+         y="62.878082"
+         x="21.514072"
+         id="tspan4385">// schema</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:5.64444px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;stroke-width:0.264583"
+       x="97.19014"
+       y="62.704449"
+       id="text4391"><tspan
+         id="tspan4389"
+         x="97.19014"
+         y="62.704449"
+         style="fill:#ffffff;stroke-width:0.264583">// query</tspan></text>
+    <text
+       id="text4395"
+       y="62.704449"
+       x="160.68967"
+       style="font-size:5.64444px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;stroke-width:0.264583"
+       xml:space="preserve"><tspan
+         style="fill:#ffffff;stroke-width:0.264583"
+         y="62.704449"
+         x="160.68967"
+         id="tspan4393">// response</tspan></text>
+  </g>
+</svg>
