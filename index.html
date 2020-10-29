@@ -17,7 +17,10 @@
     <textarea id="source">
 class: nord-dark, center, middle, title
 
-# Tracker 2.0 Security and Automation
+# Tracker 2.0
+## and the path to security automation enlightenment
+
+.logo[![tracker logo](images/tracker.png)]
 
 ---
 
@@ -25,7 +28,8 @@ class: nord-dark, left, middle
 
 ## Mike Williamson
 
-* HC ITsec > startups > CDS > TBSCyber
+* Security Engineering @ TBSCyber
+* Previously: founding team @ CDS
 
 ---
 
@@ -71,72 +75,6 @@ class: nord-dark, left, middle
 * Powerful tool for deployment pipeline
 
 .sync.eighty[![tracker](images/tracker-demo.gif)]
-
----
-
-class: nord-dark, middle, left
-
-### The path to security automation enlightenment
-
----
-
-class: nord-dark, middle, left, vsplit
-
-## Infrastructure as Code
-
-.column[
-* The good parts: it's code!
-* The bad parts: it's code!
-]
-
-.column[
-
-```
-resource "google_sql_database instance" "master" {
-name = "master-instance"
-database_version = "POSTGRES_11"
-region = "us-centra1"
-settings {
-    tier = "db-f1-micro"
-  }
-}
-```
-
-]
-
----
-
-
-class: nord-dark, middle, left, vsplit
-
-## Infrastructure as Data
-
-.column[
-* Manage infrastructure using a declarative model
-* Treats infrastructure as data, more portable than code
-* Data can be imported/modified by other tools
-* Language agnostic, version controlled
-]
-
-.column[
-```
-apiVersion: sql.cnrm.cloud.google.com/v1beta1
-  kind: SQLInstance
-  metadata:
-    name: sqlinstance-sample-mysql
-  spec:
-    databaseVersion: MYSQL_5_7
-    region: us-central1
-  settings:
-    tier: db-g1-small
-    diskSize: 25
-    diskType: PD_SSD
-    availabilityType: REGIONAL
-    backupConfiguration:
-    binaryLogEnabled: true
-    enabled: true
-```
-]
 
 ---
 
@@ -227,6 +165,60 @@ class: nord-dark, left, middle
 * Inputs & validation: *GraphQL*
 
 ---
+
+class: nord-dark, middle, left
+
+## Declarative
+
+>*Syntax that lets you state "Here is what I intend to create"* without having to write the sequence of programming commands to create it.
+<cite>Microsoft Azure Resource Manager docs</cite>
+---
+
+class: nord-dark, middle, left, vsplit
+
+## Infrastructure as Code
+
+.column[
+* Not declarative: "sequence of programming commands"
+* security issues: is this sequence safe?
+* bugs: does this sequence do what I think?
+]
+
+.column[
+```
+output "instance_public_ip_addresses" {
+  value = {
+    for instance in aws_instance.example:
+     instance.id => instance.public
+     if instance.associate_public_ip_address
+  }
+}
+```
+
+]
+
+---
+
+class: nord-dark, middle, left, vsplit
+
+## Infrastructure As Data
+
+> I call this “Infrastructure As Data” — *describing what your systems look like in simple machine-readable data formats*. Have programs execute those data formats and ensure your infrastructure matches.
+
+<cite>Michael DeHaan - founder of Ansible - O'Reilly Radar, 2013</cite>
+
+---
+
+class: nord-dark, middle, left, vsplit
+
+## Infrastructure As Data
+
+> I call this “Infrastructure As Data” — describing what your systems look like in simple machine-readable data formats. *Have programs execute those data formats and ensure your infrastructure matches*.
+
+<cite>Michael DeHaan - founder of Ansible - O'Reilly Radar, 2013</cite>
+
+---
+
 
 class: nord-dark, center, middle
 
@@ -531,24 +523,9 @@ class: nord-dark, left, middle
 
 ---
 
-
-class: nord-dark, left, middle
-
-### The ingredients for an automated ATO?
-
-* Kubernetes: 56 data types
-* Config Connector: 91 data types
-* 147 Lego blocks, that can build any system (we use 26)
-* Each has ~2-10 properties relevant to answering our questions:
-  * Does it meet policy requirements?
-  * Is it configured securely?
-  * Does it follow best practice?
-
----
-
 class: nord-dark, middle, left
 
-### Automated ATO PoC
+### Proof of concept: Generating ITSG controls
 
 ```bash
 $ cat sqlinstance.yaml
@@ -573,7 +550,7 @@ spec:
 
 class: nord-dark, middle, left, smaller-text
 
-### Automated ATO PoC
+### Proof of concept: Generating ITSG controls
 
 ```bash
 $ cat sqlinstance.yaml | ./itsg
@@ -608,16 +585,20 @@ $ cat sqlinstance.yaml | ./itsg
 ```
 
 ---
-
-
 class: nord-dark, left, middle
 
-### We (GoC) need experiments like this
+### The ingredients for an automated ATO?
 
-* We need a lot of new services
-* Shipping shouldn't require accepting a tonne of risk
+* Kubernetes: 56 data types
+* Config Connector: 91 data types
+* 147 Lego blocks, that can build any system (we use 26)
+* Each has ~2-10 properties relevant to answering our questions:
+  * Does it meet policy requirements?
+  * Is it configured securely?
+  * Does it follow best practice?
 
 ---
+
 
 class: nord-dark, left, middle
 
@@ -634,25 +615,6 @@ class: nord-dark, left, middle
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;🐩🐩🐩🐩🐩🐩🐩🐩🐩🐩<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;🐩🐩🐩🐩🐩🐩🐩🐩🐩🐩<br/>
 * Ops: 🦆🦆🦆🦆🦆🦆🦆🦆🦆🦆
-* Sec: 🐈
-
----
-
-class: nord-dark, left, middle
-
-### Making security visible empowers everyone to work on this problem
-
-* Dev: 🐈🐈🐈🐈🐈🐈🐈🐈🐈🐈<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;🐈🐈🐈🐈🐈🐈🐈🐈🐈🐈<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;🐈🐈🐈🐈🐈🐈🐈🐈🐈🐈<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;🐈🐈🐈🐈🐈🐈🐈🐈🐈🐈<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;🐈🐈🐈🐈🐈🐈🐈🐈🐈🐈<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;🐈🐈🐈🐈🐈🐈🐈🐈🐈🐈<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;🐈🐈🐈🐈🐈🐈🐈🐈🐈🐈<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;🐈🐈🐈🐈🐈🐈🐈🐈🐈🐈<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;🐈🐈🐈🐈🐈🐈🐈🐈🐈🐈<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;🐈🐈🐈🐈🐈🐈🐈🐈🐈🐈<br/>
-* Ops: 🐈🐈🐈🐈🐈🐈🐈🐈🐈🐈
 * Sec: 🐈
 
 ---

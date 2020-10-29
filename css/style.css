@@ -111,12 +111,22 @@ blockquote p em {
  padding: 1em;
 }
 
+.title h2 {
+  position: absolute;
+  font-size: 1em;
+  top: 19em;
+  right: 15em;
+}
+
 .logo {
 	font-size: 4em;
 }
 
 .logo img {
-	width: 30%;
+  position: absolute;
+	top: 2.5em;
+	right: 9.5em;
+	width: 25%;
 }
 
 .k8slb img {
