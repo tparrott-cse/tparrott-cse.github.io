@@ -31,6 +31,12 @@ pre {
 .gitops {
     position: absolute;
     top: 9em;
+    left: 22em;
+}
+
+.configconnector {
+    position: absolute;
+    top: 9em;
     left: 27em;
 }
 
