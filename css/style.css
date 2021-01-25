@@ -129,10 +129,14 @@ blockquote p em {
 }
 
 .logo img {
-  position: absolute;
-	top: 2.5em;
+  /* position: absolute;
+  top: 2.5em;
 	right: 9.5em;
-	width: 25%;
+  width: 25%; */
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 25%;
 }
 
 .k8slb img {
