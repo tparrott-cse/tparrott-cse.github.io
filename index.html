@@ -59,20 +59,6 @@ class: nord-dark, left, middle
 
 ---
 
-class: nord-dark, middle, left
-
-### Security information exists at every layer
-
-* Platform
-* Infrastructure
-* Languages
-* Dependencies
-* Workflow (who, and how)
-* Application code
-* Inputs & validation
-
----
-
 class: nord-dark, left, middle
 
 ### Analyzing any of this requires data
@@ -87,20 +73,6 @@ class: nord-dark, left, middle
 
 ---
 
-class: nord-dark, left, middle
-
-### Tracker as a testbed: * as data
-
-* Platform: *Kubernetes*
-* Infrastructure: *Config Connector*
-* Languages: *GitHub API*
-* Dependencies: *GitHub API*
-* Workflow (who, and how): *GitHub API*
-* Application code: ? (CodeQL?)
-* Inputs & validation: *GraphQL*
-
----
-
 class: nord-dark, center, middle
 
 ## Platform as data: Kubernetes
@@ -111,38 +83,10 @@ class: nord-dark, middle, left
 
 ### Kubernetes
 * describe your system with data
-* executes that description
-* *ensures system never deviates from the description*
+* execute that description
+* *ensure system never deviates from the description*
 
 .sync.sixty[![](images/kubernetes-sync.svg)]
-
----
-
-class: nord-dark, middle, left
-
-
-```yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: tracker-frontend
-  namespace: frontend
-spec:
-*  replicas: 2
-  selector:
-    matchLabels:
-      app: tracker-frontend
-  template:
-    metadata:
-      labels:
-        app: tracker-frontend
-    spec:
-      containers:
-*      - image: gcr.io/track-compliance/frontend:master-320b5fd
-        name: frontend
-        ports:
-        - containerPort: 3000
-```
 
 ---
 
