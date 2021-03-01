@@ -137,17 +137,16 @@ class: nord-dark, left, middle
 ### Analysis: System on Google Cloud shows
 
 ```bash
-$ sudo nmap -p- --reason pulse.alpha.canada.ca
-[sudo] password for mike:
-Starting Nmap 7.80 ( https://nmap.org ) at 2020-09-05 13:52 EDT
-Nmap scan report for pulse.alpha.canada.ca (34.95.5.243)
-Host is up, received syn-ack ttl 56 (0.046s latency).
+tyler@ghost:~$ sudo nmap -p- --reason tracker.alpha.canada.ca
+Starting Nmap 7.80 ( https://nmap.org ) at 2021-03-01 14:47 AST
+Nmap scan report for tracker.alpha.canada.ca (34.95.5.243)
+Host is up, received syn-ack ttl 56 (0.058s latency).
 rDNS record for 34.95.5.243: 243.5.95.34.bc.googleusercontent.com
 Not shown: 65533 filtered ports
 Reason: 65533 no-responses
-PORT    STATE SERVICE REASON
-* 80/tcp  open  http    syn-ack ttl 56 👀
-* 443/tcp open  https   syn-ack ttl 56
+PORT      STATE  SERVICE REASON
+80/tcp    open   http    syn-ack ttl 56
+443/tcp   open   https   syn-ack ttl 56
 
 Nmap done: 1 IP address (1 host up) scanned in 191.39 seconds
 ```
