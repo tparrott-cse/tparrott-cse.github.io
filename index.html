@@ -20,6 +20,10 @@ class: nord-dark, center, middle
 ## Building For automation
 ### Leveraging Data At Every Step Of The Process
 
+???
+Hey Guys -- For those of you who don't know me, my name is Tyler Parrott and I'm the product manager for a new application being developed in 
+INO called Tracker.  I'll be giving you a quick intro to the tool itself, but this talk is more about how we're deploying this tool.
+
 ---
 
 class: nord-dark, left, middle
@@ -29,8 +33,9 @@ class: nord-dark, left, middle
 .fiftyfive[![tracker](images/landing_page.png)]
 
 ???
-Hey Guys -- For those of you who don't know me, my name is Tyler Parrott and I'm the product manager for a new application being developed in 
-INO called Tracker.  I'll be giving you a quick intro to the tool itself, but this talk is more about how we're deploying this tool.
+Just for a bit of background -- Tracker is a tool being developed in collaboration with TBS.  It's a tool used to scan the web/email configurations 
+of GC domains and provide tailored security guidance based on the results.  At the moment, we're checking things like HTTPS/SSL/DMARC/SPF/DKIM.  
+You'll notice it says 2.0 there -- that's because their is currently a tool in use at TBS that measures just HTTPS/SSL configs, but this is a complete rewrite.
 
 ---
 
@@ -41,11 +46,20 @@ class: nord-dark, center, middle
 ## Tracker is Boring
 ### In many ways, Tracker is the least interesting thing about Tracker
 
+???
+But really, it's just a website that displays scan results, we've seen a millions of those, right?  I've found myself saying that Tracker itself is the least 
+interesting part about the Tracker project numerous times throughout development, so I wanted to touch on some of those interesting bits instead.
+
 ---
 
 class: nord-dark, middle, left
 
 ### The goal: Make security visible
+
+???
+When we started development on this tool, one of our goals was to make security as transparent and accessible as possible.  And by security, I mean the controls 
+themselves.  The CCCS does a really good job of auditing and monitoring applications, but how many GC deployments are able to tell you exactly what controls they 
+have covered at any given time?  How many are able to tell you whether they've drifted from their approved configurations?
 
 ---
 
@@ -61,6 +75,9 @@ class: nord-dark, left, middle
   * "Are you vulnerable?"
   * "Is it exploitable?"
 
+  ???
+  To that end, we wanted a design that could easily answer questions like these.
+
 ---
 
 class: nord-dark, left, middle
@@ -75,11 +92,19 @@ class: nord-dark, left, middle
 * Application code: *data*  (GraphQL)
 * Inputs & validation: *data*  (GraphQL)
 
+???
+In order to achieve this, we need data at every level.  Fortunately for us, we have it available at every layer of our deployment.  For our platform and infrastructure, 
+we have our Kubernetes overlays.  For Languages/Dependencies/Workflow, we have the GitHub API, and for our Application level controls, we have GraphQL.
+
 ---
 
 class: nord-dark, center, middle
 
 ## Platform as data: Kubernetes
+
+???
+Let's start with the platform.  TBS' Directive on Service and Digital states that moving forward, GC departments should develop applications in a cloud native manner 
+wherever possible.  This lead us to Kubernetes.
 
 ---
 
@@ -92,6 +117,10 @@ class: nord-dark, middle, left
 
 .sync.sixty[![](images/kubernetes-sync.svg)]
 
+???
+Our goal with Kubernetes was to treat our GitHub repo as a single source of truth.  We describe our system as YAML, execute that description, and ensure that the system 
+never deviates from the description.
+
 ---
 
 class: nord-dark, left, middle
@@ -99,6 +128,10 @@ class: nord-dark, left, middle
 ### When system descriptions are YAML
 * Data for analysis
 * Simplified operations
+
+???
+So, what does this give us?  Well, when our entire system is described as data, then we now have the ability to ingest that data elsewhere for things like validation.  
+It also simplifies operations, giving us the ability to do things like zero downtime deployments.
 
 ---
 
@@ -120,6 +153,10 @@ class: nord-dark, left, middle
   -     - image: gcr.io/track-compliance/frontend:master-d07b6e0
 ```
 
+???
+On the Operations side, it is now super simple for us to deploy and revert different aspects of our application.  All of this results in zero downtime and is completely 
+transparent to the user.  
+
 ---
 
 class: nord-dark, left, middle
@@ -133,6 +170,9 @@ $ kustomize build platform/overlays/gke | \
 80
 443
 ```
+
+???
+On the analysis side, we can now check things like what ports are open on our deployment by using a simple search of our infrastructure data.
 
 ---
 
@@ -155,6 +195,9 @@ PORT      STATE  SERVICE REASON
 Nmap done: 1 IP address (1 host up) scanned in 191.39 seconds
 ```
 
+???
+Of course, you can still verify the old fashioned way....
+
 ---
 
 class: nord-dark, middle, left
@@ -165,11 +208,32 @@ class: nord-dark, middle, left
 
 .gitops.sixty[![gitops](images/gitops2.svg)]
 
+???
+So, how do we know that our data will always reflect what's deployed?  Well, Tracker is built using test driven development.  As it stands, 
+we now have somewhere near 3000 automated tests for our API alone, with roughly 99.85% coverage.  When a feature is considered production ready, 
+the code is committed and a PR is made.  New PR's trigger the automated testing of the entire project to ensure that no existing functionality is broken.  
+When all tests pass, the code is peer reviewed and then merged to master where all of our tests are run again, this time to verify the combination of the 
+new feature with the code in the main branch also passes.
+
+If all tests and validations are successful, a new docker image will be created and store in our private container registry where our entire catalog is 
+continually scanned for vulnerabilities.  The arrival of a new imaged is noticed by a service we run called Flux, which adds a commit of its own to the 
+repository, modifying the system description to specify the use of this new image.  From there Flux syncs the config from the repo into the cluseter and K8s 
+automatically performs a zero downtimes deployment of the new image.
+
+By doing things this way, we have completely eliminated configuration drift.  Our deployment is always a reflection of our master repo.  Flux deletes 
+anything it finds in the cluster that is not from the config and does not allow things like SSH/RDP since these mechanisms change the system in ways 
+that aren't captured in version control.  Also, driving system state changes from version control provides us with an immutable audit trail.
+
 ---
 
 class: nord-dark, middle, left
 
 ### Bringing these ideas to the infrastructure layer...
+
+???
+Alright, so that's pretty cool.  We're able to automate all of our application deployment using service accounts, meaning no personal accounts need 
+to touch deployments and even if they do, whatever they manage to change will be caught and reverted by Flux within minutes.  Can the same idea be 
+brought to infrastructure provisioning?
 
 ---
 
@@ -181,6 +245,11 @@ class: nord-dark, middle, left
 * Extends Kubernetes to act on these new types
 
 .sync.sixty[![](images/config-connector-sync.svg)]
+
+???
+As it turns out, yes!  There are several tools out there that allow this, but we landed on Google's Config Connector.  Config Connector allows us to 
+manage Google cloud resources from Kubernetes, which gives us the power to manage our infrastructure the same way as we're managing our application -- 
+through peer reviewed, auditable pull requests that are automatically deployed once merged to master.
 
 ---
 
@@ -206,12 +275,18 @@ spec:
     tier: db-n1-standard-1
 ```
 
+???
+Here's an example of infrastructure as data -- it's a really simple YAML file that describes a MySQL instance.
+
 ---
 
 class: nord-dark, middle, left
 
 
 ### When our description is YAML...
+
+???
+As I mentioned earlier, when you have your system described this way and your deployment always matches the description, it becomes multi-purpose.
 
 ---
 
@@ -237,6 +312,9 @@ spec:
     tier: db-n1-standard-1
 ```
 
+???
+We can use this description to verify that it meets data residency requirements...
+
 ---
 
 class: nord-dark, middle, left
@@ -260,6 +338,9 @@ spec:
       requireSsl: true
     tier: db-n1-standard-1
 ```
+
+???
+Or to ensure backups are being performed...
 
 ---
 
@@ -285,6 +366,9 @@ spec:
     tier: db-n1-standard-1
 ```
 
+???
+Or to ensure encryption in transit...
+
 ---
 
 class: nord-dark, middle, left
@@ -294,6 +378,13 @@ class: nord-dark, middle, left
 * YAML is human readable, supporting manual analysis
 * YAML is machine readable supporting automated analysis
 
+???
+A lot of our desire to leverage the data in our system came when we started to undergo the SA&A process -- which is a 
+bunch of spreadsheets and screenshots that didn't seem all that useful to us as operators of the system.  What happens 
+to that stuff once the SA&A is over?  Does anyone reference it?  Are deployments checked to see if they're still within 
+their ATO parameters?  Leveraging our data for more than just deployment opens up a litany of new possibilities for security 
+and audit.
+
 ---
 
 class: nord-dark, middle, left
@@ -302,6 +393,9 @@ class: nord-dark, middle, left
 * We can ensure this documentation reflects reality
 
 .configconnector.eighty[![gitops](images/gitops.svg)]
+
+???
+And again, when deployed in an automated fashion, our data always reflects reality
 
 ---
 
@@ -313,11 +407,20 @@ class: nord-dark, middle, left
 * Everything from service accounts to input validation is visible from the outside
 * Tracker is now data that can be input in to some other process
 
+???
+So can we build Tracker to support analysis?  As it turns out, yes.  Every single aspect of our deployment process is described 
+as data somewhere visible to the outside.
+
 ---
 
 class: nord-dark, left, middle
 
 ### The concept: limit access to actual cluster resources by representing everything you can as data and validate that instead
+
+???
+Our end goal is this -- limit the need to provide access to the live cluster itself.  If our own developers don't even need access, 
+why should anyone else?  Obviously there might be some limitations to this concept, but for the most part we want to keep the validation 
+of security controls focused on our data
 
 ---
 
@@ -344,6 +447,10 @@ spec:
     tier: db-n1-standard-1
 
 ```
+
+???
+This concept lead us to a proof of concept.  Here on screen we have the same SQL Instance I alluded to earlier...
+
 ---
 
 class: nord-dark, middle, left, smaller-text
@@ -379,6 +486,10 @@ $ cat sqlinstance.yaml | ./itsg
   }
 }
 
+???
+We turned some of the ITSG-33 security controls into a JSON file for this proof of concept, just to 
+show what is possible when your data matches your deployed system.  Imagine being able to run a script 
+on demand and have the full set of security controls you cover returned to you.
 
 ```
 
@@ -394,6 +505,10 @@ class: nord-dark, left, middle
   * Does it meet policy requirements?
   * Is it configured securely?
   * Does it follow best practice?
+
+???
+As someone going through the ATO/SA&A process right now, this slide is a dream scenario to me -- an automated, 
+continuous ATO process.  We have everything we need to make it happen.
 
 ---
 
@@ -413,6 +528,11 @@ class: nord-dark, left, middle
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;🐩🐩🐩🐩🐩🐩🐩🐩🐩🐩<br/>
 * Ops: 🦆🦆🦆🦆🦆🦆🦆🦆🦆🦆
 * Sec: 🐈
+
+???
+Doing things this way also allows for easier integration of the SA&A/ATO process throughout development.  If
+your developers know which controls they need to satisfy and have a tool that can verify them, it makes
+the right thing to do the easy thing to do.
 
 ---
 
@@ -487,7 +607,7 @@ class: nord-dark, left, middle
         "TLS_ECDHE_ECDSA_WITH_AES_128_CCM",
         "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384",
         "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256"
-      ],
+      ], 
  ...
 ```
 ---
