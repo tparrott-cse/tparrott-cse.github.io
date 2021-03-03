@@ -37,6 +37,9 @@ Just for a bit of background -- Tracker is a tool being developed in collaborati
 of GC domains and provide tailored security guidance based on the results.  At the moment, we're checking things like HTTPS/SSL/DMARC/SPF/DKIM.  
 You'll notice it says 2.0 there -- that's because their is currently a tool in use at TBS that measures just HTTPS/SSL configs, but this is a complete rewrite.
 
+We decided to follow TBS' Policy on service and digital as closely as possible for our development.  This policy covers concepts such as using cloud first,
+supporting zero-downtime deployments, using distributed architectures, and adopting test driven development
+
 ---
 
 class: nord-dark, center, middle
@@ -48,7 +51,7 @@ class: nord-dark, center, middle
 
 ???
 But really, it's just a website that displays scan results, we've seen a millions of those, right?  I've found myself saying that Tracker itself is the least 
-interesting part about the Tracker project numerous times throughout development, so I wanted to touch on some of those interesting bits instead.
+interesting part about the Tracker project numerous times throughout development, so I wanted to touch on some of those more interesting bits instead.
 
 ---
 
@@ -58,8 +61,8 @@ class: nord-dark, middle, left
 
 ???
 When we started development on this tool, one of our goals was to make security as transparent and accessible as possible.  And by security, I mean the controls 
-themselves.  The CCCS does a really good job of auditing and monitoring applications, but how many GC deployments are able to tell you exactly what controls they 
-have covered at any given time?  How many are able to tell you whether they've drifted from their approved configurations?
+themselves.  In general we do a pretty good job of seeding our environment with GC Guardrails and  monitoring with CBS, but how many GC deployments are able to 
+tell you exactly what controls they have covered at any given time?  How many are able to tell you whether they've drifted from their approved configurations?
 
 ---
 
@@ -104,7 +107,7 @@ class: nord-dark, center, middle
 
 ???
 Let's start with the platform.  TBS' Directive on Service and Digital states that moving forward, GC departments should develop applications in a cloud native manner 
-wherever possible.  This lead us to Kubernetes.
+wherever possible.  And while we probably over engineered this project by using Kubernetes, it gave us a ton of room to experiment with some new concepts.
 
 ---
 
@@ -118,7 +121,7 @@ class: nord-dark, middle, left
 .sync.sixty[![](images/kubernetes-sync.svg)]
 
 ???
-Our goal with Kubernetes was to treat our GitHub repo as a single source of truth.  We describe our system as YAML, execute that description, and ensure that the system 
+Our focus during development was to treat our GitHub repo as a single source of truth.  We describe our system as YAML, execute that description, and ensure that the system 
 never deviates from the description.
 
 ---
@@ -155,7 +158,8 @@ class: nord-dark, left, middle
 
 ???
 On the Operations side, it is now super simple for us to deploy and revert different aspects of our application.  All of this results in zero downtime and is completely 
-transparent to the user.  
+transparent to the user.  We generally have at least 2 pods running for each of our application components, so we do a rolling replacement of them when new images
+become available.
 
 ---
 
@@ -215,9 +219,9 @@ the code is committed and a PR is made.  New PR's trigger the automated testing 
 When all tests pass, the code is peer reviewed and then merged to master where all of our tests are run again, this time to verify the combination of the 
 new feature with the code in the main branch also passes.
 
-If all tests and validations are successful, a new docker image will be created and store in our private container registry where our entire catalog is 
-continually scanned for vulnerabilities.  The arrival of a new imaged is noticed by a service we run called Flux, which adds a commit of its own to the 
-repository, modifying the system description to specify the use of this new image.  From there Flux syncs the config from the repo into the cluseter and K8s 
+If all tests and validations are successful, a new docker image will be created and stored in our private container registry where our entire catalog is 
+continually scanned for vulnerabilities.  The arrival of a new image is noticed by a service we run called Flux, which adds a commit of its own to the 
+repository, modifying the system description to specify the use of this new image.  From there Flux syncs the config from the repo into the cluster and K8s 
 automatically performs a zero downtimes deployment of the new image.
 
 By doing things this way, we have completely eliminated configuration drift.  Our deployment is always a reflection of our master repo.  Flux deletes 
@@ -231,9 +235,10 @@ class: nord-dark, middle, left
 ### Bringing these ideas to the infrastructure layer...
 
 ???
-Alright, so that's pretty cool.  We're able to automate all of our application deployment using service accounts, meaning no personal accounts need 
-to touch deployments and even if they do, whatever they manage to change will be caught and reverted by Flux within minutes.  Can the same idea be 
-brought to infrastructure provisioning?
+So that's pretty cool, right?  We're also able to automate all of our application deployment using service accounts, meaning no personal accounts need 
+to touch deployments and even if they do, whatever they manage to change will be caught and reverted by Flux within minutes.  This adds another layer of
+security since every system change requires a peer reviewed pull request that can be audited at any time. Can the same idea be 
+applied to infrastructure provisioning?
 
 ---
 
@@ -249,7 +254,9 @@ class: nord-dark, middle, left
 ???
 As it turns out, yes!  There are several tools out there that allow this, but we landed on Google's Config Connector.  Config Connector allows us to 
 manage Google cloud resources from Kubernetes, which gives us the power to manage our infrastructure the same way as we're managing our application -- 
-through peer reviewed, auditable pull requests that are automatically deployed once merged to master.
+through peer reviewed, auditable pull requests that are automatically deployed once merged to master.  So if I want to scale my database, rather than
+manipulating the cluster directly, I would edit the database YAML description, commit it, and merge it down once it passes peer review.  From there 
+Config Connector would handle the provisining within the cluster.
 
 ---
 
@@ -408,7 +415,7 @@ class: nord-dark, middle, left
 * Tracker is now data that can be input in to some other process
 
 ???
-So can we build Tracker to support analysis?  As it turns out, yes.  Every single aspect of our deployment process is described 
+So can we build Tracker to support analysis?  As it turns out, for the most part, yes.  Every single aspect of our deployment process is described 
 as data somewhere visible to the outside.
 
 ---
@@ -449,7 +456,7 @@ spec:
 ```
 
 ???
-This concept lead us to a proof of concept.  Here on screen we have the same SQL Instance I alluded to earlier...
+This goal lead us to a proof of concept.  Here on screen we have the same SQL Instance I alluded to earlier...
 
 ---
 
@@ -487,7 +494,7 @@ $ cat sqlinstance.yaml | ./itsg
 }
 
 ???
-We turned some of the ITSG-33 security controls into a JSON file for this proof of concept, just to 
+We turned some of the ITSG-33 security controls into data we can use for this proof of concept, just to 
 show what is possible when your data matches your deployed system.  Imagine being able to run a script 
 on demand and have the full set of security controls you cover returned to you.
 
@@ -553,6 +560,9 @@ class: nord-dark, left, middle
 * Ops: 🐈🐈🐈🐈🐈🐈🐈🐈🐈🐈
 * Sec: 🐈
 
+???
+So we want to selfishly make everyone on into a security cat.
+
 ---
 
 class: nord-dark, left, middle
@@ -590,6 +600,13 @@ class: nord-dark, left, middle
 
 ```
 
+???
+So, do we have any other ways to leverage data in our system?  One of the things I found quite difficult throughout the Tracker 
+development process was trying to find an authoritative list of GC domains.  There were a few lists floating around, but they were
+wildly different.  We spent some time curating domains and ended up creating a repo that we now ingest on a nightly basis before we
+perform our scans.  This gives GC departments a single place to update their domains that need to be measured and helps ensure we 
+have the most up to date domains to scan.
+
 ---
 
 class: nord-dark, left, middle
@@ -610,6 +627,13 @@ class: nord-dark, left, middle
       ], 
  ...
 ```
+
+???
+Another place we're leveraging data is with the guidance we're providing.  We've turned the TLS portion of ITSP.40.062 into a JSON repo
+that we also ingest every night before our scans.  Before doing this, our guidance was manually entered into our database based on our
+interpretation of a document.  This helps streamline the guidance we're using and also allows this data to be ingested for use in 
+other systems.
+
 ---
 
 class: nord-dark, middle, center
